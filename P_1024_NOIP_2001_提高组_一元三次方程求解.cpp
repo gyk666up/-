@@ -1,23 +1,76 @@
-//浮点数二分
-#include<bits/stdc++.h>
+// //会写二分 但不知道如何从小到大用二分找到三个根
+// #include<bits/stdc++.h>
+// using namespace std;
+// double a,b,c,d;
+// map<double,bool>st;//判断这个根是否出现过 出现过的话 继续找
+// bool check(double x)
+// {
+//     if(a*pow(x,3)+b*pow(x,2)+c*x+d<=0)
+//     {
+//         if(a*pow(x,3)+b*pow(x,2)+c*x+d==0)
+//         {
+//             if(!st.count(x))
+//             { 
+//                 st[x]=1;
+//                 return 1;
+               
+//             }
+//             else
+//             {
+//                 return false;
+//             }
+//         }
+//     }
+//     else return false;
+// }
+// int main()
+// {
+//     ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
+//     cin>>a>>b>>c>>d;
+//     bool first=1;
+//     //三个二分查找
+    
+//     //取合适的精度就可以了 如何精度太高的话 可以会tle
+//     for(int i=1;i<=3;i++)
+//     {
+//         double l=-101,r=101;
+//         while(l+1!=r)
+//         {
+//             double mid=(l+r)/2;
+//             if(check(mid))l=mid;
+//             else r=mid;
+//         }
+//         if(first)
+//         {
+//             first=0;
+//             cout<<l;
+//         }
+//         else
+//         {
+//             cout<<" "<<l;
+//         }
+        
+//     }
+//     return 0;
+// }
+
+
+#include <iostream>
+#include <cstdio>
 using namespace std;
-double a,b,c,d;
-bool check1(double x)
-{
-    if(a*x*x*x+b*x*x+c*x+d<0)return true;
-    else return false;
-}
 int main()
 {
-    ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
-    cin>>a>>b>>c>>d;
-    double l=-101,r=101;
-    while(r-l>1e-4)
-    {
-        double mid=(l+r)/2;
-        if(check1(mid))l=mid;
-        else r=mid;
-    }
-    cout<<l;
-    return 0;
+   double a,b,c,d;
+   scanf("%lf%lf%lf%lf",&a,&b,&c,&d);
+   for(double i=-100;i<=100;i+=0.001)
+   {
+      double j=i+0.001;
+      double y1=a*i*i*i+b*i*i+c*i+d;
+      double y2=a*j*j*j+b*j*j+c*j+d;
+      if(y1>=0&&y2<=0||y1<=0&&y2>=0)
+      {
+         double x=(i+j)/2;
+         printf("%.2lf ",x);
+      }
+   }
 }

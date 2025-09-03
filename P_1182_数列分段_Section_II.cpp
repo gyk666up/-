@@ -38,6 +38,8 @@ signed main()
         l=max(l,a[i]);
         r+=a[i];
     }
+    //注意这里 l和r要在区域的两端 且两端不可以是可行点
+    l--,r++;
     while(l+1!=r)
     {
         int mid=(l+r)/2;
