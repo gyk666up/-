@@ -54,23 +54,38 @@
 //     return 0;
 // }
 
+// //这道题不熟 重点掌握！！！
+// //暴力 枚举
+// #include <iostream>
+// #include <cstdio>
+// using namespace std;
+// int main()
+// {
+//    double a,b,c,d;
+//    scanf("%lf%lf%lf%lf",&a,&b,&c,&d);
+//    for(double i=-100;i<=100;i+=0.001)
+//    {
+//       double j=i+0.001;
+//       double y1=a*i*i*i+b*i*i+c*i+d;
+//       double y2=a*j*j*j+b*j*j+c*j+d;
+//       if(y1>=0&&y2<=0||y1<=0&&y2>=0)
+//       {
+//          double x=(i+j)/2;
+//          printf("%.2lf ",x);
+//       }
+//    }
+// }
 
-#include <iostream>
-#include <cstdio>
+//这个方案也好聪明啊 
+#include<bits/stdc++.h>
 using namespace std;
-int main()
-{
-   double a,b,c,d;
-   scanf("%lf%lf%lf%lf",&a,&b,&c,&d);
-   for(double i=-100;i<=100;i+=0.001)
-   {
-      double j=i+0.001;
-      double y1=a*i*i*i+b*i*i+c*i+d;
-      double y2=a*j*j*j+b*j*j+c*j+d;
-      if(y1>=0&&y2<=0||y1<=0&&y2>=0)
-      {
-         double x=(i+j)/2;
-         printf("%.2lf ",x);
-      }
-   }
+int main(){
+	double a,b,c,d;
+	cin>>a>>b>>c>>d;
+	for(double i=-100;i<=100;i+=0.00001){//注意精度
+		if(abs((i*i*i*a)+(i*i*b)+(i*c)+d)<0.00001){//根据公式找到大概的值
+			cout<<fixed<<setprecision(2)<<i<<" ";//保留两位小数输出
+		}
+	}
+	return 0;
 }
