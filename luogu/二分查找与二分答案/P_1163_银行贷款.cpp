@@ -57,6 +57,8 @@ signed main()
     ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
     cin>>w0>>w>>m;
     double l=0,r=3.1;
+
+    //两种方式
     // for(int i=0;i<=100;i++)
     // {
     //     double mid=(l+r)/2;
@@ -73,7 +75,7 @@ signed main()
         if(check(mid))l=mid;
         else r=mid;
     }
-    
+
     cout<<fixed<<setprecision(1)<<100*l<<endl;
 
     return 0;

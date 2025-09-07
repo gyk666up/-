@@ -57,7 +57,7 @@
 // }
 
 
-//注意特判的情况
+//注意特判的情况！~@@
 #include<bits/stdc++.h>
 using namespace std;
 const int N=1e5+11;
