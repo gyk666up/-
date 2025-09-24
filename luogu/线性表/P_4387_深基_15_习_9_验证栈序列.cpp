@@ -46,6 +46,8 @@ int main()
         {
             int x=pushed[i];
             stk.push(x);
+            //入栈一个元素后，可能触发「连续多次出栈」（栈顶元素可能连续匹配出栈序列的多个元素），
+            //必须使用while 不能使用if 如果入1 2 3  出3 2 1
             while(stk.size()&&stk.top()==poped[j])
             {
                 stk.pop();
