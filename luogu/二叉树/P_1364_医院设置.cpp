@@ -125,62 +125,9 @@
 // // // }
 
 
-// // #include<bits/stdc++.h>
-// // using namespace std;
-// // int n;
-// // const int N=100;
-// // int g[N][N];
-// // int a[N];
-// // int main()
-// // {
-// //     ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
-// //     int n;cin>>n;
-// //     for(int i=1;i<=n;i++)
-// //     {
-// //         for(int j=1;j<=n;j++)
-// //         {
-// //             g[i][j]=g[j][i]=0x3f3f3f3f;
-// //         }
-// //     }
-// //     for(int i=1;i<=n;i++)
-// //     {
-// //         g[i][i]=0;//!!!
-// //         int w,l,r;cin>>w>>l>>r;
-// //         a[i]=w;
-// //         if(l!=0)g[i][l]=g[l][i]=1;
-// //         if(r!=0)g[i][r]=g[r][i]=1;
-// //     }
-
-// //     //Floyd算法枚举中转城市
-// //     for(int k=1;k<=n;k++)
-// //     {
-// //         for(int i=1;i<=n;i++)
-// //         {
-// //             if(i!=k)
-// //             {
-// //                 for(int j=1;j<=n;j++)
-// //                 {
-// //                     if(i!=j&&j!=k&&g[i][j]>g[i][k]+g[k][j])
-// //                     g[i][j]=g[i][k]+g[k][j];
-// //                 }
-// //             }
-// //         }
-// //     }
-// //     int ans=0x3f3f3f3f;
-// //     //枚举每个城市建设医院
-// //     for(int i=1;i<=n;i++)
-// //     {
-// //         int total=0;
-// //         for(int j=1;j<=n;j++)
-// //         total+=g[i][j]*a[j];
-// //         ans=min(ans,total);
-// //     }
-// //     cout<<ans;
-// //     return 0;
-// // }
-
 // //正解
 
+// //这个不熟！！！
 // //树的重心最多有两个且这两个是相邻的结点！！！结果一样
 // #include <cstdio>
 // #include <cstring>
@@ -242,6 +189,7 @@
 //     }
 //     dfs(1);  // 从节点1开始DFS，找树的重心ans
 //     dis[ans] = 1;  // 医院节点的距离初始化为1（实际距离为0）
+//     // printf("%dhhh",ans);
 //     dfs1(ans);  // 计算以ans为医院时的总路程
 //     printf("%d", sum);  // 输出最小总路程
 //     return 0;
@@ -250,63 +198,100 @@
 
 
 
+
+
+
 #include<bits/stdc++.h>
 using namespace std;
-#define MAXN 1001
-int n,cnt,tot,ans,sum;
-int head[MAXN],net[MAXN],to[MAXN],val[MAXN],siz[MAXN],dis[MAXN],f[MAXN];
+const int N=1002;
+int head[N],to[N],nex[N];
+int siz[N],w[N];
+int dist[N];
+int fa[N];
+int n,ans=0;
+int cnt=0;
+int total;
 void add(int x,int y)
 {
     to[cnt]=y;
-    net[cnt]=head[x];
+    nex[cnt]=head[x];
     head[x]=cnt++;
 }
-void dfs(int u)
+void dfs(int x)
 {
-    siz[u]+=val[u];
-    for(int i=head[u];i!=-1;i=net[i])
-    {
-        int v=to[i];//i是边的索引
-        if(v!=f[u])
-        {
-            f[v]=u;
-            dfs(v);
-            siz[u]+=siz[v];
-        }
-    }
-    //找树的重心：第一个满足“子树大小×2>=总人数的点”
-    if(2*siz[u]>=tot&&!ans)ans=u;
-}
-void dfs1(int u)
-{
-    sum+=(dis[u]-1)*val[u];
-    for(int i=head[u];i!=-1;i=net[i])
+    siz[x]+=w[x];
+    for(int i=head[x];i!=-1;i=nex[i])
     {
         int v=to[i];
-        if(!dis[v])
+        if(v!=fa[x])
         {
-            dis[v]=dis[u]+1;
+            fa[v]=x;
+            dfs(v);
+            siz[x]+=siz[v];
+        }
+    }
+    if(2*siz[x]>=total&&!ans)ans=x;
+}
+int sum=0;
+void dfs1(int x)
+{
+    sum+=(dist[x]-1)*w[x];
+    for(int i=head[x];i!=-1;i=nex[i])
+    {
+        int v=to[i];
+       if(!dist[v])
+        {
+            dist[v]=dist[x]+1;
             dfs1(v);
         }
     }
 }
 int main()
 {
-    //ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
+    ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
     cin>>n;
     memset(head,-1,sizeof head);
     for(int i=1;i<=n;i++)
     {
-        int x,y;
-        cin>>val[i]>>x>>y;
-        if(x)add(i,x),add(x,i);
-        if(y)add(i,y),add(y,i);
-        tot+=val[i];
+        int W,u,v;cin>>W>>u>>v;
+        w[i]=W;
+        if(u)add(i,u),add(u,i);
+        if(v)add(i,v),add(v,i);
+        total+=w[i];
     }
-   
-    dfs(1);//从结点1开始，找树的重心
-    dis[ans]=1;
+    dfs(1);
+    dist[ans]=1;
     dfs1(ans);
     cout<<sum;
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

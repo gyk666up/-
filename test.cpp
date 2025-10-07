@@ -40,6 +40,8 @@ int main()
         }
     }
     int Max_depth=0,Max_width=0;
+
+    //这里很聪明的做法
     for(int i=2;i<=n;i++)
     {
         int depth=g[1][i];

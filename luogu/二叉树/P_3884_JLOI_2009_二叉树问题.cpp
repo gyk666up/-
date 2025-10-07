@@ -57,34 +57,122 @@
 
 
 //另一种思路 dfs求深度和宽度 bfs求距离
+// #include<bits/stdc++.h>
+// using namespace std;
+// int n,x,y;
+// const int N=200;
+// struct node
+// {
+//     int left,right,fa,depth;
+// }dat[N];
+// int Max_depth,width[N],Max_width;//数组是记录同一深度结点的个数 个数也就是宽度
+// int visited[N];
+// void dfs(int u)
+// {
+//     if(visited[u])return;
+
+//     visited[u]=1;
+//     int left=dat[u].left,right=dat[u].right,depth=dat[u].depth;
+//     Max_depth=max(Max_depth,depth);
+//     width[depth]++;
+//     if(left)
+//     {
+//         dat[left].depth=depth+1;
+//         dfs(left);
+//     }
+//     if(right)
+//     {
+//         dat[right].depth=depth+1;
+//         dfs(right);
+//     }
+// }
+// struct node2
+// {
+//     int pos,step;
+// };
+// int main()
+// {
+//     ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
+//     cin>>n;
+//     //如果u的左孩子是空的话 v就当做左孩子否则就是右孩子
+//     for(int i=1;i<=n-1;i++)
+//     {
+//         int u,v;cin>>u>>v;
+//         if(!dat[u].left)dat[u].left=v;
+//         else dat[u].right=v;
+//         dat[v].fa=u;
+//     }
+//     cin>>x>>y;
+//     dat[1].depth=1;
+//     dfs(1);
+//     for(int i=1;i<=n;i++)
+//     Max_width=max(Max_width,width[i]);
+//     cout<<Max_depth<<endl<<Max_width<<endl;
+
+//     memset(visited,0,sizeof visited);
+//     node2 t={x,0};
+//     visited[t.pos]=1;
+//     queue<node2>q;
+//     q.push(t);
+//     while(q.size())
+//     {
+//         node2 t=q.front();q.pop();
+//         if(t.pos==y)
+//         {
+//             cout<<t.step;
+//             break;
+//         }
+
+//         int left=dat[t.pos].left,right=dat[t.pos].right,fa=dat[t.pos].fa,step=t.step;
+//         if(left&&!visited[left])//有左孩子 并且没有被访问过
+//         {
+//             visited[left]=1;
+//             q.push({left,step+1});
+//         }
+//         if(right&&!visited[right])
+//         {
+//             visited[right]=1;
+//             q.push({right,step+1});
+//         }
+//         if(fa&&!visited[fa])
+//         {
+//             visited[fa]=1;
+//             q.push({fa,step+2});//注意这里的距离
+//         }
+
+//     }
+//     return 0;
+// }
+
 #include<bits/stdc++.h>
 using namespace std;
-int n,x,y;
-const int N=200;
+const int N=1e2+11;
+bool visited[N];
 struct node
 {
-    int left,right,fa,depth;
+    int fa,left,right,depth;
 }dat[N];
-int Max_depth,width[N],Max_width;//数组是记录同一深度结点的个数 个数也就是宽度
-int visited[N];
-void dfs(int u)
+int n;
+int Max_depth,Max_width,width[N];
+void dfs(int x)
 {
-    if(visited[u])return;
+    if(visited[x])return;
 
-    visited[u]=1;
-    int left=dat[u].left,right=dat[u].right,depth=dat[u].depth;
+    visited[x]=1;
+    int left=dat[x].left,right=dat[x].right,depth=dat[x].depth;
     Max_depth=max(Max_depth,depth);
     width[depth]++;
-    if(left)
+    if(left&&!visited[left])
     {
         dat[left].depth=depth+1;
         dfs(left);
     }
-    if(right)
+    if(right&&!visited[right])
     {
         dat[right].depth=depth+1;
         dfs(right);
     }
+    return;
 }
 struct node2
 {
@@ -94,52 +182,51 @@ int main()
 {
     ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
     cin>>n;
-    //如果u的左孩子是空的话 v就当做左孩子否则就是右孩子
+    int x,y;
     for(int i=1;i<=n-1;i++)
     {
         int u,v;cin>>u>>v;
-        if(!dat[u].left)dat[u].left=v;
+        if(dat[u].left==NULL)dat[u].left=v;
         else dat[u].right=v;
         dat[v].fa=u;
     }
     cin>>x>>y;
     dat[1].depth=1;
     dfs(1);
-    for(int i=1;i<=n;i++)
-    Max_width=max(Max_width,width[i]);
+    for(int i=1;i<=n;i++)Max_width=max(Max_width,width[i]);
     cout<<Max_depth<<endl<<Max_width<<endl;
 
-    memset(visited,0,sizeof visited);
+    memset(visited,0,sizeof visited );
     node2 t={x,0};
-    visited[t.pos]=1;
     queue<node2>q;
     q.push(t);
+   
+    visited[t.pos]=1;
     while(q.size())
     {
-        node2 t=q.front();q.pop();
+        auto t=q.front();q.pop();
         if(t.pos==y)
         {
-            cout<<t.step;
+            cout<<t.step<<endl;
             break;
         }
 
         int left=dat[t.pos].left,right=dat[t.pos].right,fa=dat[t.pos].fa,step=t.step;
-        if(left&&!visited[left])//有左孩子 并且没有被访问过
+        if(left&&!visited[left])
         {
             visited[left]=1;
             q.push({left,step+1});
         }
-        if(right&&!visited[right])
+         if(right&&!visited[right])
         {
             visited[right]=1;
             q.push({right,step+1});
         }
-        if(fa&&!visited[fa])
+         if(fa&&!visited[fa])
         {
             visited[fa]=1;
-            q.push({fa,step+2});//注意这里的距离
+            q.push({fa,step+2});
         }
-
     }
     return 0;
 }
